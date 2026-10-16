@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://aathraey.github.io/sitemap.xml
