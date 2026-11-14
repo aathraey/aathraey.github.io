@@ -143,6 +143,9 @@
     const cards = $$(".cm-cards figure", sec), k30 = $(".cm-total b", sec), main = $(".cm", sec);
     gsap.set([gal, total], { autoAlpha: 0 });
     gsap.set(cards, { xPercent: -50, yPercent: -50 });
+    // The cards are hidden until the fan plays, so lazy loading would fetch them late. Load and
+    // decode them up front (about 320 KB) so each card is ready the moment it flies in.
+    cards.forEach(f => { const im = f.querySelector("img"); if (im) { im.loading = "eager"; im.decode?.().catch(() => {}); } });
     const tl = pinned("content", sec, stage, "300%");
     iris(tl, bg, inner, 0);
     // "13 posts a day" sits on the agents screen, so it is visible when the guide says it.

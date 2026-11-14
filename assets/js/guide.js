@@ -87,7 +87,8 @@
     if (s.bw) el.style.setProperty("--bw", `${s.bw}px`); else el.style.removeProperty("--bw");
   };
   const place = (x, lift = 0) => { gx = x; gy = lift; if (hasGsap) gsap.set(el, { x, y: -lift }); else el.style.transform = `translate(${x}px, ${-lift}px)`; };
-  function moveTo(target, then) {
+  // walk: use the walking frames for any direction, at a steady walking speed (the trip down to his seat).
+  function moveTo(target, then, walk) {
     lastSpot = target;
     // Whole pixels at rest, so the sprite is never drawn between two pixels and blurred.
     const s = { ...asSpot(target) }; s.x = Math.round(s.x); s.lift = Math.round(s.lift);
@@ -97,11 +98,11 @@
     walking = true;
     bubble.classList.remove("on");
     // Walking frames only suit a sideways move. Up, down and diagonal moves glide in the standing pose.
-    const stroll = Math.abs(dy) <= Math.abs(dx) * 0.35;
+    const stroll = walk || Math.abs(dy) <= Math.abs(dx) * 0.35;
     el.style.setProperty("--face", stroll ? (dx >= 0 ? 1 : -1) : s.face || (s.flip ? -1 : 1));
     setPose(stroll ? "walk" : "idle");
     gsap.to(el, {
-      x: s.x, y: -s.lift, duration: clamp(dist / 640, 0.35, 1.1), ease: stroll && !dy ? "none" : "power2.inOut", overwrite: true,
+      x: s.x, y: -s.lift, duration: walk ? clamp(dist / 260, 0.8, 2.4) : clamp(dist / 640, 0.35, 1.1), ease: walk || (stroll && !dy) ? "none" : "power2.inOut", overwrite: true,
       onUpdate() { gx = gsap.getProperty(el, "x"); gy = -gsap.getProperty(el, "y"); },
       onComplete() { place(s.x, s.lift); walking = false; dress(s); setPose("idle"); then && then(true); }
     });
@@ -374,7 +375,10 @@
     const slow = !instant && EX.ranges[s.b.sec] ? s.b.travel : 0; // only where the scene is scroll-driven
     focusOn(s.b.focus, !far ? 0 : instant || reduced || !hasGsap ? 250 : (slow || travelTime(s.y)) * 1000);
     scrollToY(s.y, instant, slow);
-    moveTo(spotFor(s), moved => present(s, moved));
+    // On a long ride through a scene (the carousel fan), wait until the page arrives so he talks
+    // about what is already on screen, not what is still flying in.
+    const t0 = performance.now(), ride = slow && far ? slow * 1000 : 0;
+    moveTo(spotFor(s), moved => { const wait = ride - (performance.now() - t0); wait > 0 ? later(() => present(s, moved), wait) : present(s, moved); });
   }
   function next() {
     if (mode !== "tour" || cur < 0) return;
@@ -427,7 +431,7 @@
       auto = false;
       focusOn(null);
       relayout(true); // "Just looking" gets the plain page: ordinary scrolling, light motion
-      const corner = () => { bubble.classList.remove("on"); moveTo(96, sitDown); };
+      const corner = () => { bubble.classList.remove("on"); moveTo(96, sitDown, true); };
       if (silent) { hush(); corner(); }
       else say([tour.quiet], { after: corner });
       return;
@@ -547,7 +551,9 @@
     if (!tour) return;
     measure(); placeSpot();
     hintEl.textContent = HINT();
-    if (!walking) {
+    // In quiet mode, only re-place him once he is seated. Before that he is about to walk down to
+    // his seat, and snapping him there first would cancel the walk.
+    if (!walking && (mode !== "quiet" || el.classList.contains("sit"))) {
       const t = mode === "quiet" ? 96 : cur >= 0 ? spotFor(steps[cur]) : lastSpot, s = asSpot(t);
       lastSpot = t; place(s.x, s.lift); dress(s);
     }
@@ -582,7 +588,7 @@
           hush(); focusOn(null);
           const quiet = mode === "quiet";
           // In the tour he answers from where he already stands, which is clear of the buttons.
-          moveTo(quiet || !tour.roam ? 92 : lastSpot, () => say([c.a], { pose: "point", keep: !quiet, after: quiet ? () => moveTo(96, () => el.classList.add("sit")) : null }));
+          moveTo(quiet || !tour.roam ? 92 : lastSpot, () => say([c.a], { pose: "point", keep: !quiet, after: quiet ? () => moveTo(96, sitDown, true) : null }));
         });
         list.append(b);
       });
