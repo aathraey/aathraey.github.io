@@ -5,12 +5,11 @@ html.js .guide.ready{display:block}
 /* All frames are stacked and one is visible at a time, so a pose change never shows a gap. */
 .g-body img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transform:scaleX(var(--face,1));user-select:none;-webkit-user-drag:none;visibility:hidden}
 .g-body img.on{visibility:visible}
-.guide.sit .g-body{transform:translateY(21%) scaleY(.96)}
 /* Breathing steps aside for a hop, spin or duck. Without the :not() list it outranks them, and
    they would fire late, whenever the pose next changed. */
 .guide.idle:not(.sit):not(.hop):not(.spin):not(.duck):not(.startle) .g-body{animation:g-breathe 3.4s ease-in-out infinite}
 /* Asleep: z's float up and drift off his head, one after another. */
-.g-zzz{position:absolute;left:66%;top:-18px;width:44px;height:64px;pointer-events:none;display:none}
+.g-zzz{position:absolute;left:66%;top:-40px;width:44px;height:64px;pointer-events:none;display:none}
 .guide.asleep .g-zzz{display:block}
 .g-zzz i{position:absolute;left:0;bottom:0;font:700 1.05rem/1 var(--mono);font-style:normal;color:#1B1A17;text-shadow:0 0 3px #fff,0 0 2px #fff;opacity:0;animation:g-z 2.7s ease-out infinite}
 .g-zzz i:nth-child(2){font-size:.9rem;animation-delay:.9s}
@@ -18,7 +17,7 @@ html.js .guide.ready{display:block}
 @keyframes g-z{0%{opacity:0;transform:translate(0,0) scale(.5) rotate(-12deg)}18%{opacity:1}70%{opacity:.9}100%{opacity:0;transform:translate(28px,-50px) scale(1.15) rotate(10deg)}}
 /* Waking up: a startled jolt upward, a wide stretch, then he settles. */
 .guide.startle .g-body{animation:g-startle .75s cubic-bezier(.2,.9,.3,1)}
-@keyframes g-startle{0%{transform:translateY(21%) scaleY(.96)}18%{transform:translateY(-18px) scale(1.1,1.14)}40%{transform:translateY(0) scale(.95,1.03)}60%{transform:translateY(-4px) scale(1.04,.98)}100%{transform:none}}
+@keyframes g-startle{0%{transform:none}18%{transform:translateY(-18px) scale(1.1,1.14)}40%{transform:translateY(0) scale(.95,1.03)}60%{transform:translateY(-4px) scale(1.04,.98)}100%{transform:none}}
 @keyframes g-breathe{50%{transform:scaleY(1.018)}}
 .guide.hop .g-body{animation:g-hop .5s cubic-bezier(.3,0,.3,1)}
 @keyframes g-hop{0%,100%{transform:translateY(0) scale(1)}35%{transform:translateY(-14px) scale(.98,1.03)}70%{transform:translateY(0) scale(1.03,.96)}}

@@ -17,8 +17,8 @@
   const store = (k, v) => { try { return v === undefined ? sessionStorage.getItem(k) : sessionStorage.setItem(k, v); } catch { return null; } };
 
   // ----- Sprite
-  const SEQ = { idle: ["idle-0"], wave: ["wave-0", "wave-1", "wave-2", "wave-1"], walk: ["walk-0", "walk-1", "walk-2", "walk-3"], point: ["point-0", "point-1", "point-2"], deadpan: ["idle-1"], sleep: ["idle-2"] };
-  const FRAMES = ["idle-0", "idle-1", "idle-2", "wave-0", "wave-1", "wave-2", "wave-3", "walk-0", "walk-1", "walk-2", "walk-3", "point-0", "point-1", "point-2", "point-3"];
+  const SEQ = { idle: ["idle-0"], wave: ["wave-0", "wave-1", "wave-2", "wave-1"], walk: ["walk-0", "walk-1", "walk-2", "walk-3"], point: ["point-0", "point-1", "point-2"], squint: ["idle-1"], deadpan: ["deadpan"], shrug: ["shrug"], facepalm: ["facepalm"], sit: ["sit"], sleep: ["sit-sleep"] };
+  const FRAMES = ["idle-0", "idle-1", "idle-2", "wave-0", "wave-1", "wave-2", "wave-3", "walk-0", "walk-1", "walk-2", "walk-3", "point-0", "point-1", "point-2", "point-3", "deadpan", "shrug", "facepalm", "sit", "sit-sleep"];
   // Every frame is its own stacked image and only one is visible. Swapping one image's src can
   // show a blank frame while the new file decodes; flipping visibility cannot.
   let pose = "idle", fi = 0, tick = 0, blink = [], shown = img;
@@ -36,7 +36,7 @@
     if (f === shown || !f.complete || !f.naturalWidth) return; // not loaded yet: keep the current frame
     shown.classList.remove("on"); f.classList.add("on"); shown = f;
   };
-  const still = p => p === "idle" || p === "deadpan";
+  const still = p => ["idle", "squint", "deadpan", "shrug", "facepalm"].includes(p);
   const setPose = p => { if (pose === p) return; pose = p; fi = 0; el.classList.toggle("idle", still(p)); show(SEQ[p][0]); };
   const stepSprite = () => {
     tick++;
@@ -52,15 +52,20 @@
   let emoteTimer;
   const showEmote = (t, ms = 1600, act = false) => { clearTimeout(emoteTimer); emote.textContent = t; emote.classList.toggle("act", act); emote.classList.add("on"); if (ms) emoteTimer = setTimeout(() => emote.classList.remove("on"), ms); };
   const hideEmote = () => { clearTimeout(emoteTimer); emote.classList.remove("on"); };
-  // The half-lidded frame is the deadpan stare. It is a standing frame, so it only plays while he
-  // is standing. Mid-point or mid-wave it would snap his arm down and back up.
-  const stare = ms => {
-    if (pose !== "idle") return;
-    setPose("deadpan");
-    setTimeout(() => { if (pose === "deadpan") setPose("idle"); }, ms);
+  // A held pose for a beat, then back to standing. Only from a standing pose: mid-point or mid-wave
+  // it would snap his arm down and back up.
+  const strike = (p, ms) => {
+    if (!still(pose)) return;
+    setPose(p);
+    setTimeout(() => { if (pose === p) setPose("idle"); }, ms);
   };
+  // Long pauses get the half-lidded squint. The last one in a line, right before the punchline,
+  // gets the full arms-crossed deadpan, so the big pose lands once per line instead of flickering.
+  // Only from plain standing, so a pause never cuts off a reaction like a facepalm.
+  const stare = (ms, punch) => { if (pose === "idle" || pose === "squint") strike(punch ? "deadpan" : "squint", ms); };
   // An action like *tsk tsk* is shown above the head, never typed into the bubble.
-  const react = act => { showEmote(act, 2000, true); stare(1700); };
+  const actPose = a => (/tsk|sigh|facepalm/i.test(a) ? "facepalm" : /shrug/i.test(a) ? "shrug" : "deadpan");
+  const react = act => { showEmote(act, 2000, true); strike(actPose(act), 1700); };
   const flash = (name, ms) => { el.classList.remove(name); void el.offsetWidth; el.classList.add(name); setTimeout(() => el.classList.remove(name), ms); };
   const hop = () => { if (!reduced) flash("hop", 520); };
 
@@ -123,6 +128,8 @@
         if (ch === ")") aside = false;
       });
     });
+    const lastLong = units.filter(u => u.pause > 800).pop();
+    if (lastLong) lastLong.punch = true;
     return units;
   }
   const plain = line => line.replace(/\*[^*]+\*|\{pp?\}/g, "").replace(/\s+/g, " ").trim();
@@ -143,7 +150,7 @@
       if (my !== token) return;
       if (i >= units.length) return finish();
       const u = units[i++];
-      if (u.pause) { if (u.pause > 800) stare(u.pause + 200); return later(step, u.pause * pace); } // the beat before a punchline
+      if (u.pause) { if (u.pause > 800) stare(u.pause + 200, u.punch); return later(step, u.pause * pace); } // the beat before a punchline
       if (u.act) { react(u.act); return later(step, 450); }
       u.node.classList.add("v");
       later(step, (/[.!?…]/.test(u.ch) ? 190 : /[,;:]/.test(u.ch) ? 70 : 17) * pace);
@@ -165,7 +172,7 @@
       typeLine(line, my, () => {
         if (my !== token) return;
         if (i < lines.length) return later(next, clamp(1400 + line.length * 24, 1800, 4200));
-        later(() => setPose("idle"), 1400);
+        later(() => { if (pose !== "sit" && pose !== "sleep") setPose("idle"); }, 1400);
         // He is done talking: light up the button that moves on.
         later(() => { if (my === token) bubble.classList.add("ready"); }, 320);
         if (opt.choice) { choice.hidden = false; nav.hidden = true; return; }
@@ -185,16 +192,17 @@
   el.append(zzz);
   const wakeUp = () => {
     asleep = false; el.classList.remove("asleep", "sit");
-    if (pose === "sleep") setPose("idle");
+    if (pose === "sleep" || pose === "sit") setPose("idle");
     blink = ["idle-0", "idle-0", "idle-0", "idle-1", "idle-2", "idle-2", "idle-1", "idle-0"];
     showEmote("!", 900, true);
     if (!reduced) flash("startle", 750);
   };
-  const stand = () => { el.classList.remove("sit"); if (asleep) wakeUp(); };
+  const sitDown = () => { el.classList.add("sit"); setPose("sit"); };
+  const stand = () => { el.classList.remove("sit"); if (asleep) wakeUp(); else if (pose === "sit") setPose("idle"); };
   function armIdle() {
     idleTimers.forEach(clearTimeout); idleTimers = [];
     if (reduced) return;
-    idleTimers.push(setTimeout(() => { if (!typing && !walking) el.classList.add("sit"); }, 26000));
+    idleTimers.push(setTimeout(() => { if (!typing && !walking) sitDown(); }, 26000));
     idleTimers.push(setTimeout(() => { if (el.classList.contains("sit") && mode === "tour") { asleep = true; setPose("sleep"); el.classList.add("asleep"); } }, 56000));
   }
 
@@ -419,7 +427,7 @@
       auto = false;
       focusOn(null);
       relayout(true); // "Just looking" gets the plain page: ordinary scrolling, light motion
-      const corner = () => { bubble.classList.remove("on"); moveTo(96, () => { el.classList.add("sit"); setPose("idle"); }); };
+      const corner = () => { bubble.classList.remove("on"); moveTo(96, sitDown); };
       if (silent) { hush(); corner(); }
       else say([tour.quiet], { after: corner });
       return;
@@ -449,7 +457,9 @@
     wave: () => hold("wave", 2400),
     point: () => hold("point", 2600),
     deadpan: () => hold("deadpan", 2600),
-    sit: () => { el.classList.add("sit"); setTimeout(() => el.classList.remove("sit"), 3400); },
+    shrug: () => hold("shrug", 2400),
+    facepalm: () => hold("facepalm", 2600),
+    sit: () => { sitDown(); setTimeout(() => { if (pose === "sit" && !asleep) stand(); }, 3400); },
     spin: () => flash("spin", 900),
     duck: () => flash("duck", 1700)
   };

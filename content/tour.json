@@ -128,7 +128,8 @@
         "align": "end",
         "gap": 300,
         "bubble": "left"
-      }
+      },
+      "pose": "shrug"
     },
     {
       "id": "moblife-1",
@@ -396,7 +397,7 @@
       },
       {
         "t": "I'm keeping count. {pp} It's not looking good for you.",
-        "do": "hop"
+        "do": "facepalm"
       },
       {
         "t": "Poking me does not make the tour go faster.",
@@ -436,7 +437,7 @@
       },
       {
         "t": "That's all my material. {pp} We're starting over.",
-        "do": "hop"
+        "do": "shrug"
       }
     ],
     "fast": "Slow down. {p} I didn’t blow this week’s Fable usage for nothing.",

@@ -143,7 +143,7 @@ Footer: Claudelius is fan art. This site is not affiliated with Anthropic, obvio
 
 1. Please don't poke the guide. *(reaction: hop)*
 2. Yes, I blink now. [pause] It cost extra. *(reaction: blink)*
-3. I'm keeping count. [long pause] It's not looking good for you. *(reaction: hop)*
+3. I'm keeping count. [long pause] It's not looking good for you. *(reaction: facepalm)*
 4. Poking me does not make the tour go faster. *(reaction: flip)*
 5. Fine. [pause] I'll stand over here. *(reaction: walk)*
 6. You followed me. [long pause] Bold. *(reaction: hop)*
@@ -153,7 +153,7 @@ Footer: Claudelius is fan art. This site is not affiliated with Anthropic, obvio
 10. Aathraey built a button for everything. [long pause] He did not build one to stop you. *(reaction: deadpan)*
 11. I'm going under the floor. [pause] Don't follow me. *(reaction: duck)*
 12. The tour is that way. [pause] Follow the hand. *(reaction: point)*
-13. That's all my material. [long pause] We're starting over. *(reaction: hop)*
+13. That's all my material. [long pause] We're starting over. *(reaction: shrug)*
 
 **Other asides**
 
