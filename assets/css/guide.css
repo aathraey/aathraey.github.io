@@ -1,0 +1,96 @@
+/* Claudelius: a fixed layer over the page. Never blocks clicks except on itself. */
+.guide{position:fixed;left:0;bottom:10px;z-index:60;width:120px;pointer-events:none;will-change:transform;display:none}
+html.js .guide.ready{display:block}
+.g-body{position:relative;display:block;width:120px;height:120px;padding:0;border:0;background:none;pointer-events:auto;cursor:pointer;transform-origin:50% 100%;transition:transform .45s cubic-bezier(.3,1.4,.4,1)}
+/* All frames are stacked and one is visible at a time, so a pose change never shows a gap. */
+.g-body img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transform:scaleX(var(--face,1));user-select:none;-webkit-user-drag:none;visibility:hidden}
+.g-body img.on{visibility:visible}
+.guide.sit .g-body{transform:translateY(21%) scaleY(.96)}
+/* Breathing steps aside for a hop, spin or duck. Without the :not() list it outranks them, and
+   they would fire late, whenever the pose next changed. */
+.guide.idle:not(.sit):not(.hop):not(.spin):not(.duck):not(.startle) .g-body{animation:g-breathe 3.4s ease-in-out infinite}
+/* Asleep: z's float up and drift off his head, one after another. */
+.g-zzz{position:absolute;left:66%;top:-18px;width:44px;height:64px;pointer-events:none;display:none}
+.guide.asleep .g-zzz{display:block}
+.g-zzz i{position:absolute;left:0;bottom:0;font:700 1.05rem/1 var(--mono);font-style:normal;color:#1B1A17;text-shadow:0 0 3px #fff,0 0 2px #fff;opacity:0;animation:g-z 2.7s ease-out infinite}
+.g-zzz i:nth-child(2){font-size:.9rem;animation-delay:.9s}
+.g-zzz i:nth-child(3){font-size:1.25rem;animation-delay:1.8s}
+@keyframes g-z{0%{opacity:0;transform:translate(0,0) scale(.5) rotate(-12deg)}18%{opacity:1}70%{opacity:.9}100%{opacity:0;transform:translate(28px,-50px) scale(1.15) rotate(10deg)}}
+/* Waking up: a startled jolt upward, a wide stretch, then he settles. */
+.guide.startle .g-body{animation:g-startle .75s cubic-bezier(.2,.9,.3,1)}
+@keyframes g-startle{0%{transform:translateY(21%) scaleY(.96)}18%{transform:translateY(-18px) scale(1.1,1.14)}40%{transform:translateY(0) scale(.95,1.03)}60%{transform:translateY(-4px) scale(1.04,.98)}100%{transform:none}}
+@keyframes g-breathe{50%{transform:scaleY(1.018)}}
+.guide.hop .g-body{animation:g-hop .5s cubic-bezier(.3,0,.3,1)}
+@keyframes g-hop{0%,100%{transform:translateY(0) scale(1)}35%{transform:translateY(-14px) scale(.98,1.03)}70%{transform:translateY(0) scale(1.03,.96)}}
+.g-shadow{position:absolute;left:22px;right:22px;bottom:-2px;height:10px;border-radius:50%;background:#0003;filter:blur(4px);z-index:-1}
+
+.g-emote{position:absolute;left:50%;top:-22px;transform:translate(-50%,8px) scale(.6);min-width:34px;padding:3px 9px;border-radius:999px;background:#fff;border:1.5px solid #1B1A17;color:#1B1A17;font-family:var(--mono);font-weight:700;font-size:.78rem;line-height:1.4;text-align:center;opacity:0;transition:opacity .18s,transform .3s cubic-bezier(.3,1.6,.4,1);white-space:nowrap}
+.g-emote.on{opacity:1;transform:translate(-50%,0) scale(1)}
+.g-emote.act{font-style:italic;font-weight:600;color:#B9573A;border-color:#B9573A}
+/* Poke reactions */
+.guide.spin .g-body{animation:g-spin .8s cubic-bezier(.4,0,.2,1)}
+@keyframes g-spin{to{transform:rotateY(360deg)}}
+.guide.duck .g-body{animation:g-duck 1.6s cubic-bezier(.4,0,.2,1)}
+@keyframes g-duck{0%,100%{transform:translateY(0)}22%,74%{transform:translateY(92%)}}
+
+.g-bubble{position:absolute;bottom:16px;left:126px;width:var(--bw,min(430px,calc(100vw - 160px)));background:#FFFDF8;color:#1B1A17;border:1.5px solid #1B1A17;border-radius:16px;padding:12px 16px 14px;box-shadow:6px 7px 0 #1b1a1726;pointer-events:auto;opacity:0;transform:translateY(8px) scale(.97);transform-origin:0 100%;transition:opacity .2s,transform .28s cubic-bezier(.3,1.3,.4,1);visibility:hidden}
+.g-bubble.on{opacity:1;transform:none;visibility:visible}
+.g-bubble::before{content:"";position:absolute;left:-9px;bottom:26px;width:16px;height:16px;background:#FFFDF8;border-left:1.5px solid #1B1A17;border-bottom:1.5px solid #1B1A17;transform:rotate(45deg)}
+.guide.right .g-bubble{left:auto;right:126px;transform-origin:100% 100%}
+/* drop: the bubble hangs down from the sprite's head, for spots high up on the screen. */
+.guide.drop .g-bubble{bottom:auto;top:8px;transform-origin:0 0}
+.guide.drop.right .g-bubble{transform-origin:100% 0}
+.guide.drop .g-bubble::before{bottom:auto;top:44px}
+.guide.right .g-bubble::before{left:auto;right:-9px;border:0;border-right:1.5px solid #1B1A17;border-top:1.5px solid #1B1A17}
+.g-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px}
+.g-name{font-family:var(--mono);font-size:.66rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#B9573A}
+.g-quiet{border:1.5px solid #D9CFBB;border-radius:999px;background:none;padding:3px 9px;font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:#5A564D}
+.g-quiet:hover{border-color:#1B1A17;color:#1B1A17}
+.g-nav{display:flex;align-items:center;gap:10px;margin-top:11px}
+.g-nav[hidden]{display:none}
+.g-nav button{padding:7px 14px;border-radius:999px;border:1.5px solid #1B1A17;background:#FFFDF8;font-size:.84rem;font-weight:600}
+.g-nav .g-next{background:#1B1A17;color:#FFFDF8;margin-left:auto;padding-inline:20px}
+.g-nav .g-next:hover{background:#D97757;border-color:#D97757}
+.g-nav .g-back:disabled{opacity:.35;cursor:default}
+.g-count{font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;color:#5A564D}
+.g-hint{margin-top:8px;font-family:var(--mono);font-size:.62rem;letter-spacing:.03em;color:#5A564D;line-height:1.5}
+.g-bubble:not(.nudge) .g-nav[hidden] + .g-hint{display:none}
+.guide.nohint .g-hint{display:none}
+.guide.nohint .g-bubble.nudge .g-hint{display:block}
+.g-bubble.silent .g-text{display:none}
+/* Done talking: the button that moves on turns orange, gives one small shake, then pulses. */
+.g-bubble.ready .g-next,.g-bubble.ready .g-choice button:first-child{background:#D97757;border-color:#D97757;color:#fff;animation:g-shake .5s ease-in-out 1,g-pulse 1.7s ease-out .5s infinite}
+@keyframes g-shake{0%,100%{transform:none}20%{transform:translateX(-4px)}45%{transform:translateX(4px)}70%{transform:translateX(-2px)}}
+@keyframes g-pulse{0%{box-shadow:0 0 0 0 #d9775799}70%,100%{box-shadow:0 0 0 11px #d9775700}}
+.g-bubble.nudge .g-hint{color:#B9573A;font-weight:700}
+.g-bubble.nudge .g-next,.g-bubble.nudge .g-choice button:first-child{animation:g-nudge .5s 2}
+.g-bubble.nudge .g-quiet{border-color:#B9573A;color:#B9573A}
+@keyframes g-nudge{0%,100%{transform:none}30%{transform:scale(1.1)}60%{transform:scale(.97)}}
+.g-text{font-size:.98rem;line-height:1.45;min-height:1.45em}
+.g-text .c{opacity:0}
+.g-text .c.v{opacity:1}
+.g-text .aside{font-style:italic;font-size:.88em;color:#8E8474;letter-spacing:.01em}
+.g-choice{display:flex;flex-wrap:wrap;gap:8px;margin-top:11px}
+.g-choice[hidden]{display:none}
+.g-choice button{padding:8px 14px;border-radius:999px;border:1.5px solid #1B1A17;background:#FFFDF8;font-size:.86rem;font-weight:600}
+.g-choice button:first-child{background:#1B1A17;color:#FFFDF8}
+.g-choice button:hover{background:#D97757;border-color:#D97757;color:#fff}
+
+@media (max-width:700px){
+  .guide{width:68px;bottom:6px}
+  .g-body{width:68px;height:68px}
+  .g-shadow{left:12px;right:12px}
+  .g-bubble,.guide.right .g-bubble{left:72px;right:auto;bottom:8px;width:calc(100vw - 84px);padding:10px 12px 11px}
+  .guide.right .g-bubble::before{left:-9px;right:auto;border:0;border-left:1.5px solid #1B1A17;border-bottom:1.5px solid #1B1A17}
+  .g-text{font-size:.9rem}
+  .g-emote{top:-18px;font-size:.66rem}
+  .g-nav{margin-top:8px}
+  .g-nav button{padding:8px 14px}
+  .g-hint{display:none}
+  .g-bubble.nudge .g-hint{display:block}
+}
+@media (prefers-reduced-motion:reduce){
+  .g-body,.g-bubble,.g-emote{transition:none}
+  .guide.idle .g-body,.guide.hop .g-body,.guide.startle .g-body,.g-zzz i{animation:none}
+  .g-bubble.ready .g-next,.g-bubble.ready .g-choice button:first-child{animation:none}
+}

@@ -1,0 +1,447 @@
+{
+  "name": "Claudelius",
+  "_how_to_edit": "{p} is a short pause and {pp} is a long pause before a punchline. *text between stars* is an action: it shows above the guide's head and is not typed into the bubble. focus is the part of the page that stays lit while the rest dims. roam: true lets the guide stand near what it talks about; false keeps it on the floor. stand: a hand-placed spot for that beat. pace: slows the typing for that beat (1 is normal, 1.3 is 30% slower).",
+  "roam": true,
+  "beats": [
+    {
+      "id": "lobby",
+      "scroll": 0,
+      "x": 5,
+      "pose": "wave",
+      "choice": true,
+      "lines": [
+        "Hi. I'm Claudelius. {p} Aathraey built me so he wouldn't have to introduce himself.",
+        "He calls that efficient. *eye roll* {p} You'll notice a pattern."
+      ]
+    },
+    {
+      "id": "portrait",
+      "scroll": 0,
+      "x": 5,
+      "pose": "point",
+      "focus": "#portrait",
+      "lines": [
+        "This is him. UCLA, cognitive science. He studies why people do things. {pp} Then he builds apps so they don’t do those things."
+      ]
+    },
+    {
+      "id": "content-1",
+      "sec": "content",
+      "at": 0.09,
+      "mel": "#content .scene-head",
+      "x": 5,
+      "lines": [
+        "He says he's proud to be lazy."
+      ],
+      "stand": {
+        "by": "#content .scene-desc",
+        "side": "below",
+        "align": "start",
+        "gap": 26,
+        "bubble": "right",
+        "bw": 330
+      }
+    },
+    {
+      "id": "content-2",
+      "sec": "content",
+      "at": 0.2,
+      "mel": ".cm-stations",
+      "x": 5,
+      "pose": "point",
+      "lines": [
+        "So he built 5 AI agents to automate his content creation for him. {p} 13 posts a day. {pp} That is more work than writing 13 posts a day. {pp} No one has told him."
+      ],
+      "stand": {
+        "by": ".cm-daily",
+        "side": "below",
+        "align": "start",
+        "gap": 22,
+        "bubble": "right"
+      }
+    },
+    {
+      "id": "content-5",
+      "sec": "content",
+      "at": 0.78,
+      "travel": 5.6,
+      "mel": ".cm-gallery",
+      "x": 5,
+      "pose": "point",
+      "lines": [
+        "These are his carousels. He reviewed every one. {pp} A lot of work for someone who calls himself lazy."
+      ],
+      "stand": {
+        "by": ".cm",
+        "fx": 0.05,
+        "fy": 0.84,
+        "bubble": "right"
+      }
+    },
+    {
+      "id": "leads-1",
+      "sec": "leads",
+      "at": 0.36,
+      "mel": "#leads .scene-head",
+      "x": 5,
+      "pose": "point",
+      "lines": [
+        "This is his AI lead generation system. {p} It found 1,325 local businesses in 2 hours."
+      ],
+      "stand": {
+        "by": ".leads-stats div:nth-child(1)",
+        "side": "below",
+        "align": "start",
+        "gap": 300,
+        "bubble": "right"
+      }
+    },
+    {
+      "id": "leads-2",
+      "sec": "leads",
+      "at": 0.65,
+      "mel": ".leads-main",
+      "x": 5,
+      "lines": [
+        "It wrote 838 cold emails. {p} It sent about 123."
+      ],
+      "stand": {
+        "by": ".leads-stats div:nth-child(2)",
+        "side": "below",
+        "align": "start",
+        "gap": 300,
+        "bubble": "right"
+      }
+    },
+    {
+      "id": "leads-3",
+      "sec": "leads",
+      "at": 0.91,
+      "mel": ".leads-main",
+      "x": 5,
+      "lines": [
+        "He says \"about 123.\" {p} He could have said 150. {pp} I would have said 150."
+      ],
+      "stand": {
+        "by": ".leads-stats div:nth-child(3)",
+        "side": "below",
+        "align": "end",
+        "gap": 300,
+        "bubble": "left"
+      }
+    },
+    {
+      "id": "moblife-1",
+      "sec": "moblife",
+      "at": 0.1,
+      "mel": "#moblife .scene-head",
+      "x": 5,
+      "lines": [
+        "At 8 he memorized 700+ Pokemon. {p} Names, types, regions."
+      ],
+      "stand": {
+        "by": "#moblife .scene-head",
+        "side": "below",
+        "align": "start",
+        "gap": 46,
+        "bubble": "right",
+        "bw": 320
+      }
+    },
+    {
+      "id": "moblife-2",
+      "sec": "moblife",
+      "at": 0.25,
+      "mel": ".ml-phone",
+      "x": 5,
+      "lines": [
+        "He calls that {p} \"not the best use of my memory.\""
+      ],
+      "stand": {
+        "by": "#moblife .scene-head",
+        "side": "below",
+        "align": "start",
+        "gap": 46,
+        "bubble": "right",
+        "bw": 320
+      }
+    },
+    {
+      "id": "moblife-3",
+      "sec": "moblife",
+      "at": 0.38,
+      "mel": ".ml-phone",
+      "x": 5,
+      "pose": "point",
+      "lines": [
+        "Then he built a habit tracker where you catch monsters. {pp} So I guess it worked out."
+      ],
+      "stand": {
+        "by": ".ml-party",
+        "side": "below",
+        "align": "start",
+        "gap": 24,
+        "bubble": "right"
+      }
+    },
+    {
+      "id": "moblife-4",
+      "sec": "moblife",
+      "at": 0.72,
+      "mel": ".ml-phone",
+      "x": 5,
+      "lines": [
+        "He started by doing 50+ interviews first. The boss battles were really the beta testers' idea.",
+        "Technically mine, {p} since I was the one who summarized all those call transcripts for him. *tsk tsk*"
+      ],
+      "stand": {
+        "by": ".ml-party",
+        "side": "below",
+        "align": "start",
+        "gap": 24,
+        "bubble": "right"
+      }
+    },
+    {
+      "id": "moblife-5",
+      "sec": "moblife",
+      "at": 0.91,
+      "mel": ".ml-side",
+      "x": 5,
+      "pose": "point",
+      "lines": [
+        "Somehow he generated 100+ installs in just a week. {pp} That's how you know it wasn't just him, his brother, and his parents downloading it."
+      ],
+      "stand": {
+        "by": ".ml-stats",
+        "side": "below",
+        "align": "start",
+        "gap": 20,
+        "bubble": "right"
+      }
+    },
+    {
+      "id": "promly",
+      "el": "#work-promly",
+      "focus": "#work-promly",
+      "x": 92,
+      "pose": "point",
+      "lines": [
+        "This is Promly. {p} He audited 16 pages of their website. Then handed over 12 ideas and 2 prototypes. {pp} All thanks to my awesome web design skills, by the way."
+      ]
+    },
+    {
+      "id": "amethyst",
+      "el": "#work-amethyst",
+      "focus": "#work-amethyst",
+      "x": 5,
+      "pose": "point",
+      "lines": [
+        "This is Amethyst. {p} He liked a screen-time app called Opal. {p} But he’s broke and can’t pay the subscription. {pp} So he took it apart, ended up finding 3 problems, and built his own. {p} He does that often."
+      ]
+    },
+    {
+      "id": "support",
+      "el": "#work-support",
+      "focus": "#work-support",
+      "x": 92,
+      "pose": "point",
+      "lines": [
+        "This is his support ticket routing agent. {p} It reads support tickets every 15 minutes. {p} If a ticket is vague, it’ll ask for details politely."
+      ]
+    },
+    {
+      "id": "skool",
+      "el": "#work-skool",
+      "focus": "#work-skool",
+      "x": 5,
+      "pose": "point",
+      "lines": [
+        "This is Skool of Focus. {p} He ran a community of 120+ people for a year and did 30+ interviews to learn what they needed. {p} He does that a lot. The interviewing. {pp} Then he makes me analyze everything."
+      ]
+    },
+    {
+      "id": "small-1",
+      "el": "#small",
+      "focus": "#small-menu",
+      "x": 92,
+      "pose": "point",
+      "lines": [
+        "He’s also lazy with eating. At UCLA, he didn't want to check the dining hall menu. So he made an AI agent text him the high-protein options. Saves him 3 minutes each morning. {pp} Who gave him a Claude subscription?"
+      ],
+      "pace": 1.3
+    },
+    {
+      "id": "small-2",
+      "el": "#small",
+      "focus": "#small-seat",
+      "x": 92,
+      "pose": "point",
+      "lines": [
+        "He also built an agent to watch for an open seat in a full class. It found one. It called him. {p} He was asleep. {pp} So it called his parents and they signed up for him.",
+        "Then he decided he didn't want the class. {pp} And they wonder why Mythos won’t be released to kids like him."
+      ]
+    },
+    {
+      "id": "life-intro",
+      "el": ".life-cards",
+      "top": 190,
+      "x": 5,
+      "pose": "wave",
+      "lines": [
+        "That's the work. {pp} Here's what he does outside of it."
+      ],
+      "stand": {
+        "by": ".life-cards",
+        "side": "below",
+        "align": "start",
+        "gap": 26,
+        "bubble": "right"
+      }
+    },
+    {
+      "id": "life-wake",
+      "el": ".life-cards",
+      "top": 190,
+      "focus": "#life-wake",
+      "x": 5,
+      "pose": "point",
+      "lines": [
+        "He wakes up at 5:30. {p} On purpose. {pp} I guess I can respect it."
+      ]
+    },
+    {
+      "id": "life-sun",
+      "el": ".life-cards",
+      "top": 190,
+      "focus": "#life-sun",
+      "x": 5,
+      "pose": "point",
+      "lines": [
+        "Most people like sunsets. He likes sunrises. {p} Of course he does. 5am… *rolls eyes*"
+      ]
+    },
+    {
+      "id": "life-bake",
+      "el": ".life-cards",
+      "top": 190,
+      "focus": "#life-bake",
+      "x": 5,
+      "pose": "point",
+      "lines": [
+        "He tried baking once. Ended up making brownies so hard a friend couldn’t finish chewing after a whole 45-minute class. {pp} Safe to say, he follows recipes now. {p} Mostly."
+      ]
+    },
+    {
+      "id": "life-health",
+      "el": ".life-cards",
+      "top": 190,
+      "focus": "#life-health",
+      "x": 5,
+      "pose": "point",
+      "lines": [
+        "He once got distracted from work because of a distracting app. So he ended up coding a full productivity chrome extension to block it… for good. {pp} Someone has to tell him that not everything requires building an app."
+      ]
+    },
+    {
+      "id": "exit",
+      "el": "#contact",
+      "x": 92,
+      "pose": "wave",
+      "lines": [
+        "That's Aathraey, {p} the most lazy, yet productive guy I know.",
+        "Oh, did I mention he's looking for an internship? {pp} He will build a new AI agent for your business, whether you ask or not. {pp} Then he'll insist that you need it or you're falling behind.",
+        "You should email him. {pp} He'll be awake."
+      ],
+      "stand": {
+        "by": "#contact .exit-copy",
+        "fx": 1.14,
+        "fy": 0.3,
+        "bubble": "right"
+      }
+    }
+  ],
+  "quiet": "Fine. I'll be in the corner. {pp} I will be judging though.",
+  "chips": [
+    {
+      "q": "What's he best at?",
+      "a": "Talking to users before building. 50+ interviews for one app. {pp} Overkill? Absolutely, but that’s Aathraey."
+    },
+    {
+      "q": "What’s his availability?",
+      "a": "He's a first-year at UCLA, graduating June 2030. He's looking for product internships. {p} He’s taking remote work during the school year and is open to relocating anywhere in the U.S. for summer."
+    },
+    {
+      "q": "Any weaknesses?",
+      "a": "Did I mention he’s lazy? {p} He’ll build a system for everything. {pp} Besides that, if you wave a Claude subscription in front of his face, you basically own him."
+    },
+    {
+      "q": "Tell me a joke.",
+      "a": "Why did the scarecrow get promoted? {pp} He was outstanding in his field. {pp} Aathraey told that one on Halloween. Nobody laughed… {p} naturally. {pp} He still got candy (he really loves Sour Patch by the way)."
+    },
+    {
+      "q": "What happens if I tap on you?",
+      "a": "Please don't… {pp} You don't want to find out."
+    }
+  ],
+  "asides": {
+    "poke": [
+      {
+        "t": "Please don't poke the guide.",
+        "do": "hop"
+      },
+      {
+        "t": "Yes, I blink now. {p} It cost extra.",
+        "do": "blink"
+      },
+      {
+        "t": "I'm keeping count. {pp} It's not looking good for you.",
+        "do": "hop"
+      },
+      {
+        "t": "Poking me does not make the tour go faster.",
+        "do": "flip"
+      },
+      {
+        "t": "Fine. {p} I'll stand over here.",
+        "do": "walk"
+      },
+      {
+        "t": "You followed me. {pp} Bold.",
+        "do": "hop"
+      },
+      {
+        "t": "Every poke costs Aathraey a token. {pp} So keep going.",
+        "do": "wave"
+      },
+      {
+        "t": "I'm sitting down. {p} This is a protest.",
+        "do": "sit"
+      },
+      {
+        "t": "Here's a spin. {pp} That's the whole trick.",
+        "do": "spin"
+      },
+      {
+        "t": "Aathraey built a button for everything. {pp} He did not build one to stop you.",
+        "do": "deadpan"
+      },
+      {
+        "t": "I'm going under the floor. {p} Don't follow me.",
+        "do": "duck"
+      },
+      {
+        "t": "The tour is that way. {p} Follow the hand.",
+        "do": "point"
+      },
+      {
+        "t": "That's all my material. {pp} We're starting over.",
+        "do": "hop"
+      }
+    ],
+    "fast": "Slow down. {p} I didn’t blow this week’s Fable usage for nothing.",
+    "wake": "I wasn't asleep. {p} I was thinking about poses.",
+    "returning": "You came back. {pp} I can’t think of any reason why. There’s really a lot of better things you could be doing now.",
+    "lost": "This room doesn't exist. Aathraey hasn't built it yet. Give him a weekend."
+  }
+}
